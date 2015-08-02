@@ -16,4 +16,13 @@ interface FactoryInterface
      * @return ItemInterface
      */
     public function createItem($name, array $options = array());
+
+
+    /**
+     * Add a child to the defined parent
+     *
+     * @param ItemInterface $parent
+     * @param ItemInterface $child
+     */
+    public function addChild(ItemInterface $parent, ItemInterface $child);
 }

@@ -25,19 +25,31 @@ class MenuFactory implements FactoryInterface
         $this->addExtension(new CoreExtension(), -10);
     }
 
-    public function createItem($name, array $options = array())
+    public function createItem($item, array $options = array(), ItemInterface $parent = null)
     {
+        $item = new MenuItem($item, $this);
+
+        if (null !== $parent) {
+            $this->addChild($parent, $item);
+        }
+
         foreach ($this->getExtensions() as $extension) {
             $options = $extension->buildOptions($options);
         }
-
-        $item = new MenuItem($name, $this);
 
         foreach ($this->getExtensions() as $extension) {
             $extension->buildItem($item, $options);
         }
 
         return $item;
+    }
+
+    public function addChild(ItemInterface $parent, ItemInterface $child)
+    {
+        $child->setParent($parent);
+        $children = $parent->getChildren();
+        $children[$child->getName()] = $child;
+        $parent->setChildren($children);
     }
 
     /**

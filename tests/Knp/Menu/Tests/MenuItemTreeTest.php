@@ -2,6 +2,7 @@
 
 namespace Knp\Menu\Tests;
 
+use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
 
 class TestMenuItem extends MenuItem {}
@@ -49,7 +50,7 @@ class MenuItemTreeTest extends TestCase
 
     public function testMoveSampleMenuToNewRoot()
     {
-        $newRoot = new TestMenuItem("newRoot", $this->getMock('Knp\Menu\FactoryInterface'));
+        $newRoot = new TestMenuItem("newRoot", new MenuFactory());
         $newRoot->addChild($this->menu);
 
         $this->assertEquals(1, $this->menu->getLevel());
@@ -177,7 +178,7 @@ class MenuItemTreeTest extends TestCase
      */
     public function testAddChildFailsIfInAnotherMenu()
     {
-        $factory = $this->getMock('Knp\Menu\FactoryInterface');
+        $factory = new MenuFactory();
         $menu = new MenuItem('Root li', $factory);
         $child = new MenuItem('Child 3', $factory);
         $menu->addChild($child);
